@@ -6,6 +6,9 @@ use image::{GenericImage,GenericImageView};
 
 #[derive(clap::Parser, Debug)]
 struct Args {
+    #[arg(short, long, default_value_t = 16)]
+    num_segments: u32,
+
     file1: PathBuf,
     file2: PathBuf,
 }
@@ -33,7 +36,7 @@ fn main() -> anyhow::Result<()> {
         bail!("images must have the same height ({} != {})", image1.height(), image2.height());
     }
 
-    let segment_width = 20;
+    let segment_width = image1.width() / args.num_segments;
 
     let mut result = image::RgbImage::new(2 * image1.width(), image1.height());
 
