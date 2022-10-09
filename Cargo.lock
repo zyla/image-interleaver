@@ -291,7 +291,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "interleaver"
+name = "image-interleaver"
 version = "0.1.0"
 dependencies = [
  "anyhow",
