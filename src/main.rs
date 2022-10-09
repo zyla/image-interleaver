@@ -50,6 +50,8 @@ fn main() -> anyhow::Result<()> {
         draw_vertical_line(&mut result, 2*source_x+this_segment_width, 0, 10);
         draw_vertical_line(&mut result, 2*source_x+this_segment_width, image1.height()-11, image1.height()-1);
         source_x += this_segment_width;
+        draw_vertical_line(&mut result, 2*source_x-1, 0, 10);
+        draw_vertical_line(&mut result, 2*source_x-1, image1.height()-11, image1.height()-1);
     }
 
     result.save("result.png")?;
