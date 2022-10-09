@@ -44,13 +44,14 @@ fn main() -> anyhow::Result<()> {
         );
     }
 
-    let segment_width = image1.width() / args.num_segments;
+    let segment_width = image1.width() as f32 / args.num_segments as f32;
 
     let mut result = image::RgbImage::new(2 * image1.width(), image1.height());
 
-    let mut source_x = 0;
-    while source_x < image1.width() {
-        let this_segment_width = min(segment_width, image1.width() - source_x);
+    let mut f_source_x = 0f32;
+    while f_source_x < image1.width() as f32 {
+        let source_x = f_source_x.trunc() as u32;
+        let this_segment_width = min(segment_width.trunc() as u32, image1.width() - source_x);
         result.copy_from(
             &*image1.view(source_x, 0, this_segment_width, image1.height()),
             2 * source_x,
@@ -75,15 +76,15 @@ fn main() -> anyhow::Result<()> {
             image1.height() - 11,
             image1.height() - 1,
         );
-        source_x += this_segment_width;
-        draw_vertical_line(&mut result, 2 * source_x - 1, 0, 10);
-        draw_vertical_line(
-            &mut result,
-            2 * source_x - 1,
-            image1.height() - 11,
-            image1.height() - 1,
-        );
+        f_source_x += segment_width;
     }
+    draw_vertical_line(&mut result, image1.width() - 1, 0, 10);
+    draw_vertical_line(
+        &mut result,
+        image1.width() - 1,
+        image1.height() - 11,
+        image1.height() - 1,
+    );
 
     result.save("result.png")?;
 
